@@ -14,5 +14,8 @@ public interface IEstudianteService {
 	public void eliminar(Integer id);
 	
 	public List<Estudiante> buscarTodos();
+	
+	public Estudiante buscarPorId(Integer id);
+
 
 }

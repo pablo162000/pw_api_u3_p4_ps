@@ -1,7 +1,9 @@
 package com.example.demo.repository;
 
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
+import org.springframework.stereotype.Repository;
+import com.example.demo.repository.model.Estudiante;
 import com.example.demo.repository.model.Materia;
 
 import jakarta.persistence.EntityManager;
@@ -30,6 +32,32 @@ public class MateriaRepositoryImpl implements IMateriaRepository {
 		// TODO Auto-generated method stub
 		this.entityManager.persist(materia);
 
+	}
+
+	@Override
+	public void actualizarMateria(Materia materia) {
+		// TODO Auto-generated method stub
+		this.entityManager.merge(materia);
+	}
+
+	@Override
+	public Materia buscarPorId(Integer id) {
+		// TODO Auto-generated method stub
+		return this.entityManager.find(Materia.class, id);
+	}
+
+	@Override
+	public void borrar(Integer id) {
+		// TODO Auto-generated method stub
+		this.entityManager.remove(this.buscarPorId(id));
+	}
+
+	@Override
+	public List<Materia> buscarTodos() {
+		// TODO Auto-generated method stub
+		TypedQuery<Materia> myQuery = this.entityManager.createQuery("SELECT m FROM Materia m", Materia.class);
+		List<Materia> materias = myQuery.getResultList();
+		return materias;
 	}
 
 }

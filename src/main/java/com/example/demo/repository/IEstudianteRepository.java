@@ -17,4 +17,9 @@ public interface IEstudianteRepository {
 	
 	public List<Estudiante> buscarTodos();
 	
+	public Estudiante buscarPorId(Integer id);
+	
+	
+	public List<Estudiante> buscarTodosPorProvincia(String provincia);
+	
 }

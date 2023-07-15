@@ -58,9 +58,7 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		this.entityManager.remove(this.buscarPorId(id));
 	}
 
-	public Estudiante buscarPorId(Integer id) {
-		return this.entityManager.find(Estudiante.class, id);
-	}
+	
 
 	@Override
 	public List<Estudiante> buscarTodos() {
@@ -70,5 +68,19 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		List<Estudiante> estudiantes = myQuery.getResultList();
 		return estudiantes;
 	}
+
+	@Override
+	public Estudiante buscarPorId(Integer id) {
+		// TODO Auto-generated method stub
+		return this.entityManager.find(Estudiante.class, id);
+	}
+
+	@Override
+	public List<Estudiante> buscarTodosPorProvincia(String provincia) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

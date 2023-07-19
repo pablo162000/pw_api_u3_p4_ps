@@ -47,7 +47,7 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		Query myQuery = this.entityManager
 				.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion");
 		myQuery.setParameter("datoCedula", cedulaNueva);
-		myQuery.setParameter("datoCedula", cedulaActual);
+		myQuery.setParameter("datoCondicion", cedulaActual);
 
 	}
 

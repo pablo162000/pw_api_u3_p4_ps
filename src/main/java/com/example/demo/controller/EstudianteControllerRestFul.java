@@ -3,6 +3,9 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,15 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.model.Estudiante;
-import com.example.demo.repository.model.Materia;
 import com.example.demo.service.IEstudianteService;
-import com.example.demo.service.IMateriaService;
-
-import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -30,10 +28,19 @@ public class EstudianteControllerRestFul {
 
 	// GET
 	@GetMapping(path = "/{cedula}")
-	public Estudiante consultarPorCedula(@PathVariable String cedula) {
+	public ResponseEntity<Estudiante>  consultarPorCedula(@PathVariable String cedula) {
 
-		return this.estudianteService.consultarPorCedula(cedula);
+	return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
 	}
+	
+	//@GetMapping(path = "/{identificador}")
+	//public Estudiante consultarPorId(@PathVariable Integer identificador) {
+
+		//return this.estudianteService.buscarPorId(identificador);
+	//}
+	
+	
+	
 
 	@PostMapping
 	// Request
@@ -63,11 +70,16 @@ public class EstudianteControllerRestFul {
 	
 	
 	@GetMapping
-	public List<Estudiante> buscarTodos(){
+	public ResponseEntity<List<Estudiante>> buscarTodos(){
 		
 		
-		
-		return this.estudianteService.buscarTodos();
+		List<Estudiante> lista  = this.estudianteService.buscarTodos();
+
+		HttpHeaders cabeceras = new HttpHeaders();
+		cabeceras.add("detallemensjae", "Ciudadanos consultados exitosamente");
+		cabeceras.add("valorAPI", "incalculable");
+		return new ResponseEntity<>(lista,cabeceras,228);
+		//return this.estudianteService.buscarTodos();
 		
 	}
 	

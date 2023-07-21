@@ -58,12 +58,10 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		this.entityManager.remove(this.buscarPorId(id));
 	}
 
-	
-
 	@Override
 	public List<Estudiante> buscarTodos() {
 		// TODO Auto-generated method stub
-		
+
 		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
 		List<Estudiante> estudiantes = myQuery.getResultList();
 		return estudiantes;
@@ -78,9 +76,15 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	@Override
 	public List<Estudiante> buscarTodosPorProvincia(String provincia) {
 		// TODO Auto-generated method stub
-		return null;
+		// TODO Auto-generated method stub
+
+		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery(
+
+				"SELECT e FROM Estudiante e WHERE e.provincia = :datoProvincia", Estudiante.class);
+
+		myQuery.setParameter("datoProvincia", provincia);
+
+		return myQuery.getResultList();
 	}
-	
-	
 
 }

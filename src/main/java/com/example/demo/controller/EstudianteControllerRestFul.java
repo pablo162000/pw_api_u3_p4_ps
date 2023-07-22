@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.model.Estudiante;
@@ -27,11 +29,13 @@ public class EstudianteControllerRestFul {
 	private IEstudianteService estudianteService;
 
 	// GET
-	@GetMapping(path = "/{cedula}")
-	public ResponseEntity<Estudiante>  consultarPorCedula(@PathVariable String cedula) {
-
-	return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
+	@GetMapping(path = "/{cedula}", produces =MediaType.APPLICATION_XML_VALUE)
+	@ResponseStatus(HttpStatus.OK)
+	public Estudiante consultarPorCedula(@PathVariable String cedula) {
+	//return ResponseEntity.status(HttpStatus.OK).body(this.estudianteService.consultarPorCedula(cedula));
+	return this.estudianteService.consultarPorCedula(cedula);
 	}
+	
 	
 	//@GetMapping(path = "/{identificador}")
 	//public Estudiante consultarPorId(@PathVariable Integer identificador) {
@@ -42,13 +46,26 @@ public class EstudianteControllerRestFul {
 	
 	
 
-	@PostMapping
+	@PostMapping(consumes = "application/xml")
 	// Request
 	public void guardar(@RequestBody Estudiante estudiante) {
 
 		this.estudianteService.guardar(estudiante);
 	}
+	
 
+
+	@PostMapping(path = "/insertar",consumes = "application/xml")
+	// Request
+	public Estudiante guardar2(@RequestBody Estudiante estudiante) {
+
+		//this.estudianteService.insertar2(estudiante);
+		this.estudianteService.guardar(estudiante);
+		return this.estudianteService.consultarPorCedula(estudiante.getCedula());
+
+	}
+	
+	
 	@PutMapping(path = "/{identificador}")
 	public void actualizar(@RequestBody Estudiante estudiante,@PathVariable Integer identificador) {
 		estudiante.setId(identificador);

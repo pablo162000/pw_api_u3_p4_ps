@@ -22,4 +22,6 @@ public interface IEstudianteRepository {
 	
 	public List<Estudiante> buscarTodosPorProvincia(String provincia);
 	
+	public Estudiante insertar2(Estudiante  estudiante);
+	
 }

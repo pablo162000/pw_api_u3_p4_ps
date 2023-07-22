@@ -17,5 +17,6 @@ public interface IEstudianteService {
 	
 	public Estudiante buscarPorId(Integer id);
 
+	public Estudiante insertar2(Estudiante  estudiante);
 
 }

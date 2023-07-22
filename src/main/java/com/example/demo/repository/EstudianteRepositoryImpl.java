@@ -87,4 +87,12 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 		return myQuery.getResultList();
 	}
 
+	@Override
+	public Estudiante insertar2(Estudiante estudiante) {
+		// TODO Auto-generated method stub
+		this.entityManager.persist(estudiante);
+		return this.seleccionarPorCedula(estudiante.getCedula());
+		
+	}
+
 }

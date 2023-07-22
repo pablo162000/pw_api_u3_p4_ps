@@ -50,6 +50,12 @@ public class EstudianteServiceImpl implements IEstudianteService{
 		// TODO Auto-generated method stub
 		return this.estudianteService.buscarPorId(id);
 	}
+
+	@Override
+	public Estudiante insertar2(Estudiante estudiante) {
+		// TODO Auto-generated method stub
+		return this.estudianteService.insertar2(estudiante);
+	}
 	
 
 }

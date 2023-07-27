@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IEstudianteRepository;
 import com.example.demo.repository.model.Estudiante;
+import com.example.demo.service.to.EstudianteTO;
 
 @Service
 public class EstudianteServiceImpl implements IEstudianteService{
@@ -55,6 +57,32 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	public Estudiante insertar2(Estudiante estudiante) {
 		// TODO Auto-generated method stub
 		return this.estudianteService.insertar2(estudiante);
+	}
+
+	@Override
+	public List<Estudiante> consultarTodos(String provincia) {
+		// TODO Auto-generated method stub
+		return this.estudianteService.buscarTodosPorProvincia(provincia);
+	}
+
+	@Override
+	public List<EstudianteTO> buscarTodos1() {
+		// TODO Auto-generated method stub
+		List<Estudiante> lista = this.estudianteService.buscarTodos();
+		List<EstudianteTO> listaTO= lista.stream().map(estudiante->this.convertir(estudiante)).collect(Collectors.toList()); 
+		return listaTO;
+	}
+	
+	private EstudianteTO convertir(Estudiante estudiante) {
+		EstudianteTO est= new EstudianteTO();
+		est.setApellido(estudiante.getApellido());
+		est.setId(estudiante.getId());
+		est.setCedula(estudiante.getCedula());
+		est.setNombre(estudiante.getNombre());
+		est.setFechaNacimiento(estudiante.getFechaNacimiento());
+		est.setProvincia(estudiante.getProvincia());
+		
+		return est;
 	}
 	
 

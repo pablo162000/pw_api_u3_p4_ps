@@ -1,54 +1,41 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.repository.IMateriaRepository;
 import com.example.demo.repository.model.Materia;
+import com.example.demo.service.to.MateriaTO;
+
 @Service
 public class MateriaServiceImpl implements IMateriaService {
 
-	
-	
 	@Autowired
 	private IMateriaRepository iMateriaRepository;
-	
-	@Override
-	public Materia consularMateriaPorCodigo(String codigo) {
-		// TODO Auto-generated method stub
-		return this.iMateriaRepository.seleccionarMateriaPorCodigo(codigo);
-	}
 
 	@Override
-	public void guardarMateria(Materia materia) {
+	public List<MateriaTO> buscarPorCedulaEstudiante(String cedula) {
 		// TODO Auto-generated method stub
-		this.iMateriaRepository.insertar(materia);
+		List<Materia> lista = this.iMateriaRepository.buscarPorCedulaEstudiante(cedula);
+
+		List<MateriaTO> listaFinal = lista.stream().map(materia -> this.convertir(materia))
+				.collect(Collectors.toList());
+
+		return listaFinal;
 	}
 
-	@Override
-	public void actualizarMateria(Materia materia) {
-		// TODO Auto-generated method stub
-		this.iMateriaRepository.actualizarMateria(materia);
-	}
+	private MateriaTO convertir(Materia materia) {
 
-	@Override
-	public Materia buscarPorId(Integer id) {
-		// TODO Auto-generated method stub
-		return this.iMateriaRepository.buscarPorId(id);
-	}
+		MateriaTO mate = new MateriaTO();
+		mate.setId(materia.getId());
+		mate.setCreditos(materia.getCodigo());
+		mate.setNombre(materia.getNombre());
+		mate.setCodigo(materia.getCodigo());
+		return mate;
 
-	@Override
-	public void borrar(Integer id) {
-		// TODO Auto-generated method stub
-		 this.iMateriaRepository.borrar(id);
-	}
-
-	@Override
-	public List<Materia> buscarTodos() {
-		// TODO Auto-generated method stub
-		return this.iMateriaRepository.buscarTodos();
 	}
 
 }

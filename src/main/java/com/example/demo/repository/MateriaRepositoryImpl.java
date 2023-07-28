@@ -3,7 +3,7 @@ package com.example.demo.repository;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
-import com.example.demo.repository.model.Estudiante;
+
 import com.example.demo.repository.model.Materia;
 
 import jakarta.persistence.EntityManager;
@@ -19,45 +19,28 @@ public class MateriaRepositoryImpl implements IMateriaRepository {
 	private EntityManager entityManager;
 
 	@Override
-	public Materia seleccionarMateriaPorCodigo(String codigo) {
+	public List<Materia> buscarPorCedulaEstudiante(String cedula) {
 		// TODO Auto-generated method stub
 		TypedQuery<Materia> myQuery = this.entityManager
-				.createQuery("SELECT m FROM Materia m WHERE m.codigo = :datoCodigo ", Materia.class);
-		myQuery.setParameter("datoCodigo", codigo);
-		return myQuery.getSingleResult();
+				.createQuery("SELECT m FROM Materia m WHERE m.estudiante.cedula = :datoCedula ", Materia.class);
+
+		myQuery.setParameter("datoCedula", cedula);
+		return myQuery.getResultList();
 	}
 
 	@Override
-	public void insertar(Materia materia) {
+	public List<Materia> bucarTodas() {
 		// TODO Auto-generated method stub
-		this.entityManager.persist(materia);
 
-	}
-
-	@Override
-	public void actualizarMateria(Materia materia) {
-		// TODO Auto-generated method stub
-		this.entityManager.merge(materia);
+		TypedQuery<Materia> myQuery = this.entityManager.createQuery("SELECT m FROM Materia m", Materia.class);
+		List<Materia> materias = myQuery.getResultList();
+		return materias;
 	}
 
 	@Override
 	public Materia buscarPorId(Integer id) {
 		// TODO Auto-generated method stub
 		return this.entityManager.find(Materia.class, id);
-	}
-
-	@Override
-	public void borrar(Integer id) {
-		// TODO Auto-generated method stub
-		this.entityManager.remove(this.buscarPorId(id));
-	}
-
-	@Override
-	public List<Materia> buscarTodos() {
-		// TODO Auto-generated method stub
-		TypedQuery<Materia> myQuery = this.entityManager.createQuery("SELECT m FROM Materia m", Materia.class);
-		List<Materia> materias = myQuery.getResultList();
-		return materias;
 	}
 
 }

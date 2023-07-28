@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.repository.model.Estudiante;
 import com.example.demo.service.IEstudianteService;
+import com.example.demo.service.IMateriaService;
 import com.example.demo.service.to.EstudianteTO;
 import com.example.demo.service.to.MateriaTO;
 
@@ -34,6 +35,9 @@ public class EstudianteControllerRestFul {
 
 	@Autowired
 	private IEstudianteService estudianteService;
+	
+	@Autowired
+	private IMateriaService iMateriaService;
 
 	// GET
 	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
@@ -108,7 +112,7 @@ public class EstudianteControllerRestFul {
 		return new ResponseEntity<>(lista, cabeceras, 228);
 	}
 
-	@GetMapping(path = "/hateoas")
+	@GetMapping(path = "/hateoas", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<EstudianteTO>> consultarTodos() {
 
 		List<EstudianteTO> lista = this.estudianteService.buscarTodos1();
@@ -125,9 +129,13 @@ public class EstudianteControllerRestFul {
 	}
 
 	@GetMapping(path = "/{cedula}/materias")
-	public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
-		return null;
-	}
+
+    public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
+
+        return new ResponseEntity<>(this.iMateriaService.buscarPorCedulaEstudiante(cedula), null, 200);
+
+    }
+	
 
 	// http://localhost:8080/API/Matricula/estudiantes/buscar
 }

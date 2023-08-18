@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import com.example.demo.service.to.MateriaTO;
 
 @RestController
 @RequestMapping("/estudiantes")
+@CrossOrigin
 public class EstudianteControllerRestFul {
 
 	@Autowired
@@ -40,7 +42,7 @@ public class EstudianteControllerRestFul {
 	private IMateriaService iMateriaService;
 
 	// GET
-	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_XML_VALUE)
+	@GetMapping(path = "/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public Estudiante consultarPorCedula(@PathVariable String cedula) {
 		// return
@@ -54,7 +56,7 @@ public class EstudianteControllerRestFul {
 	// return this.estudianteService.buscarPorId(identificador);
 	// }
 
-	@PostMapping(consumes = MediaType.APPLICATION_XML_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	// Request
 	public void guardar(@RequestBody Estudiante estudiante) {
 
@@ -85,8 +87,10 @@ public class EstudianteControllerRestFul {
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public void borrar(@PathVariable Integer id) {
+	public ResponseEntity<Estudiante> borrar(@PathVariable Integer id) {
+		Estudiante est =this.estudianteService.buscarPorId(id);
 		this.estudianteService.eliminar(id);
+		return new ResponseEntity<>(est, null, 200);
 
 	}
 
@@ -128,12 +132,17 @@ public class EstudianteControllerRestFul {
 
 	}
 
-	@GetMapping(path = "/{cedula}/materias")
+	@GetMapping(path = "/{cedula}/materias", produces = MediaType.APPLICATION_JSON_VALUE)
 
     public ResponseEntity<List<MateriaTO>> buscarPorEstudiante(@PathVariable String cedula) {
 
-        return new ResponseEntity<>(this.iMateriaService.buscarPorCedulaEstudiante(cedula), null, 200);
-
+		List<MateriaTO> lista = this.iMateriaService.buscarPorCedulaEstudiante(cedula);
+		for (MateriaTO materiaTO : lista) {
+			Link myLink =  linkTo(methodOn(MateriaControllerRestFull.class).consultarPorId(materiaTO.getId()))
+					.withSelfRel();
+			materiaTO.add(myLink);
+		}
+		return new ResponseEntity<>(lista, null, 200);
     }
 	
 

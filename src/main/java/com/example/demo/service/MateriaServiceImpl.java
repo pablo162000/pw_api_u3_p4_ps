@@ -38,4 +38,18 @@ public class MateriaServiceImpl implements IMateriaService {
 
 	}
 
+	@Override
+	public List<Materia> bucarTodas() {
+		// TODO Auto-generated method stub
+		return this.iMateriaRepository.bucarTodas();
+	}
+
+	@Override
+	public MateriaTO buscarPorId(Integer id) {
+		// TODO Auto-generated method stub
+		
+		MateriaTO mate = this.convertir(this.iMateriaRepository.buscarPorId(id));
+		return mate;
+	}
+
 }

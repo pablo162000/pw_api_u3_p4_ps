@@ -2,15 +2,14 @@ package com.example.demo.repository;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.repository.model.Estudiante;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
@@ -44,8 +43,7 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	@Override
 	public void actualizarParcial(String cedulaActual, String cedulaNueva) {
 		// TODO Auto-generated method stub
-		Query myQuery = this.entityManager
-				.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion");
+		TypedQuery<Estudiante> myQuery = (TypedQuery<Estudiante>) this.entityManager.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion");
 		myQuery.setParameter("datoCedula", cedulaNueva);
 		myQuery.setParameter("datoCondicion", cedulaActual);
 

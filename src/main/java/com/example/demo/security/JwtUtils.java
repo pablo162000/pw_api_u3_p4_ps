@@ -1,14 +1,15 @@
 package com.example.demo.security;
 
-import java.util.Date;
-
 import org.slf4j.Logger;
+
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 
 @Component
 public class JwtUtils {
@@ -18,16 +19,29 @@ public class JwtUtils {
 
 	private String jwtSecret;
 
-	@Value("${app.jwt.expiration.ms}")
-	private Integer jwtExpiration;
-	
-	
-	public String generateJwtToken(String nombre) {
+	public boolean validateJwtToken(String token) {
+		try {
+			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+			return true;
 
-		LOG.info("Semilla: " + jwtSecret + "Tiempo:" + jwtExpiration);
-		return Jwts.builder().setSubject(nombre).setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + this.jwtExpiration))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+		} catch (ExpiredJwtException e) {
+			// TODO: handle exception
+			LOG.error("Token expirado {}",e.getMessage());
+		}
+		catch(SignatureException e) {
+			LOG.error("Token invalido{}",e.getMessage());
+		}
+		return false;
 	}
+	
+	public String  getUsernameFromJwtToken(String token) {
+		//se obtiene el nombre a partir del tokn
+		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+		
+		
+	}
+	
+	
+	
 
 }

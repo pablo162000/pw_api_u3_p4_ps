@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import java.util.List;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -43,7 +44,10 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 	@Override
 	public void actualizarParcial(String cedulaActual, String cedulaNueva) {
 		// TODO Auto-generated method stub
-		TypedQuery<Estudiante> myQuery = (TypedQuery<Estudiante>) this.entityManager.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion");
+		
+		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion",Estudiante.class);
+		
+		//TypedQuery<Estudiante> myQuery = entityManager.createQuery("UPDATE Estudiante e SET e.cedula =:datoCedula WHERE e.cedula =:datoCondicion");
 		myQuery.setParameter("datoCedula", cedulaNueva);
 		myQuery.setParameter("datoCondicion", cedulaActual);
 

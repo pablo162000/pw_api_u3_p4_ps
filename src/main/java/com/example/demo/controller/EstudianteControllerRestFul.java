@@ -63,7 +63,7 @@ public class EstudianteControllerRestFul {
 		this.estudianteService.guardar(estudiante);
 	}
 
-	@PostMapping(path = "/insertar", consumes = "application/xml", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "/insertar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	// Request
 	public Estudiante guardar2(@RequestBody Estudiante estudiante) {
 

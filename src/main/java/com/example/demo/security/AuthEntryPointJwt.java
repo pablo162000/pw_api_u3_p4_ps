@@ -2,6 +2,10 @@
 
 import java.io.IOException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
@@ -11,17 +15,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
+	//Clase que gestiona los errores
 	private static final Logger LOG = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 	
 
 
 	@Override
-	public void commence(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response,
-			AuthenticationException authException) throws IOException, javax.servlet.ServletException {
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		LOG.error("Unauthorized error: {}", authException.getMessage());
-
+		LOG.error("Unauthorized error {}",authException.getMessage());
 		LOG.error(request.getServletPath());
+		
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 
 }
